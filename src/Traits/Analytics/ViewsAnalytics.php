@@ -100,6 +100,22 @@ trait ViewsAnalytics
      * @throws \Google\ApiCore\ApiException
      * @throws \Google\ApiCore\ValidationException
      */
+    public function getViewsPageByPathUrl(Period $period, string $pagePath): array
+    {
+        $googleAnalytics = $this->googleAnalytics
+            ->setDateRange($period)
+            ->addMetrics('screenPageViews')
+            ->addDimensions('pagePath')
+            ->whereDimension('pagePath',1,$pagePath,true);
+
+        return $this->getReport($googleAnalytics)
+            ->dataTable;
+    }
+
+    /**
+     * @throws \Google\ApiCore\ApiException
+     * @throws \Google\ApiCore\ValidationException
+     */
     public function topViewsByPagePath(Period $period, int $limit = 10): array
     {
         $googleAnalytics = $this->googleAnalytics->setDateRange($period)
